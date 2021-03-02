@@ -10,8 +10,12 @@ import java.util.Comparator;
             throws FileNotFoundException
             {
 
+                /* We are going to store the words and all of their associated data
+                 * in an arraylist of objects of type Entry
+                 */
                 ArrayList<Entry> words = new ArrayList<Entry>();
 
+                /
                 Comparator<Entry> wordComparator = new Comparator<Entry>() {
                     public int compare(Entry o1, Entry o2) {
                         return o1.word.compareToIgnoreCase(o2.word);
