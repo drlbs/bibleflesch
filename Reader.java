@@ -45,7 +45,7 @@ import java.util.Comparator;
                     String line = in.nextLine().trim();
                     index = line.indexOf(" ");
                     while ( index != -1 ) { 
-                        // Grab the next word "token" from the line
+                        // Grab the next word "token" from the line looking for a space to end the word
                         String word = line.substring(0,line.indexOf(" ")); 
                         // If we are at the end of a sentence, then increment the number of sentences.
                         if ( isSentenceEnd(word) ) sentences++;
@@ -66,7 +66,7 @@ import java.util.Comparator;
                             words.get(insertionPoint).isExcludedWord();
                             words.get(insertionPoint).countSyllables();
                            }
-                        /* If we have seen the word before, then just update the variables in the class
+                        /* If we have seen the word before, then just update the instance variables in the class
                          * that need to be updated.
                          */
                         else {
@@ -78,6 +78,9 @@ import java.util.Comparator;
                         line = line.substring(line.indexOf(" ")+1,line.length()).trim();
                         index = line.indexOf(" ");
                     }
+                    /*  This last block is to treat the last word on each line -- everything works just like the
+                     * block above that was looking for a space to terminate the work.
+                     */
                     String word = line.substring(0,line.length());
                     if ( isSentenceEnd(word) ) sentences++;
                     word = cleanUp(word);
