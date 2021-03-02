@@ -40,14 +40,23 @@ import java.util.Comparator;
                 int sentences = 0;
                 int qCount = 0;
                 int index = 0;
+                // We process ONE LINE at a time and then parse each word from that line
                 while (in.hasNextLine()) {
                     String line = in.nextLine().trim();
                     index = line.indexOf(" ");
                     while ( index != -1 ) { 
+                        // Grab the next word "token" from the line
                         String word = line.substring(0,line.indexOf(" ")); 
+                        // If we are at the end of a sentence, then increment the number of sentences.
                         if ( isSentenceEnd(word) ) sentences++;
+                        // Now, call the static method to clean up the word,
+                        // Questions -- are we doing too much here?  
                         word = cleanUp(word);
                         Entry wordObject = new Entry(word);
+                        /* At this point we will check to see if we have seen this word before
+                         * and if we have not we will add it to the word arraylist and call all 
+                         * of the methods in the words object to set the instance variables in the class.
+                         */
                         int arrayIndex = Collections.binarySearch(words, wordObject, wordComparator);   
                         if ( arrayIndex < 0 ) {
                             int insertionPoint = -arrayIndex-1;
@@ -57,6 +66,9 @@ import java.util.Comparator;
                             words.get(insertionPoint).isExcludedWord();
                             words.get(insertionPoint).countSyllables();
                            }
+                        /* If we have seen the word before, then just update the variables in the class
+                         * that need to be updated.
+                         */
                         else {
                            words.get(arrayIndex).addLine(lineNumber);
                            words.get(arrayIndex).checkPronoun(word);
