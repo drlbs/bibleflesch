@@ -15,13 +15,16 @@ import java.util.Comparator;
                  */
                 ArrayList<Entry> words = new ArrayList<Entry>();
 
-                /
+                /* These comparators are used to sort the arraylists */
+               
+                // This one compares the worlds alphabetically 
                 Comparator<Entry> wordComparator = new Comparator<Entry>() {
                     public int compare(Entry o1, Entry o2) {
                         return o1.word.compareToIgnoreCase(o2.word);
                     }
                 };
 
+                // This compares on the number of time the word occurs
                 Comparator<Entry> wordCountComparator = new Comparator<Entry>() {
                     public int compare(Entry o1, Entry o2) {
                         if (o1.getWordCount() < o2.getWordCount()) {
