@@ -10,8 +10,12 @@ import java.util.Comparator;
             throws FileNotFoundException
             {
 
+                /* We are going to store the words and all of their associated data
+                 * in an arraylist of objects of type Entry
+                 */
                 ArrayList<Entry> words = new ArrayList<Entry>();
 
+                /
                 Comparator<Entry> wordComparator = new Comparator<Entry>() {
                     public int compare(Entry o1, Entry o2) {
                         return o1.word.compareToIgnoreCase(o2.word);
@@ -40,14 +44,23 @@ import java.util.Comparator;
                 int sentences = 0;
                 int qCount = 0;
                 int index = 0;
+                // We process ONE LINE at a time and then parse each word from that line
                 while (in.hasNextLine()) {
                     String line = in.nextLine().trim();
                     index = line.indexOf(" ");
                     while ( index != -1 ) { 
+                        // Grab the next word "token" from the line looking for a space to end the word
                         String word = line.substring(0,line.indexOf(" ")); 
+                        // If we are at the end of a sentence, then increment the number of sentences.
                         if ( isSentenceEnd(word) ) sentences++;
+                        // Now, call the static method to clean up the word,
+                        // Questions -- are we doing too much here?  
                         word = cleanUp(word);
                         Entry wordObject = new Entry(word);
+                        /* At this point we will check to see if we have seen this word before
+                         * and if we have not we will add it to the word arraylist and call all 
+                         * of the methods in the words object to set the instance variables in the class.
+                         */
                         int arrayIndex = Collections.binarySearch(words, wordObject, wordComparator);   
                         if ( arrayIndex < 0 ) {
                             int insertionPoint = -arrayIndex-1;
@@ -57,6 +70,9 @@ import java.util.Comparator;
                             words.get(insertionPoint).isExcludedWord();
                             words.get(insertionPoint).countSyllables();
                            }
+                        /* If we have seen the word before, then just update the instance variables in the class
+                         * that need to be updated.
+                         */
                         else {
                            words.get(arrayIndex).addLine(lineNumber);
                            words.get(arrayIndex).checkPronoun(word);
@@ -66,6 +82,9 @@ import java.util.Comparator;
                         line = line.substring(line.indexOf(" ")+1,line.length()).trim();
                         index = line.indexOf(" ");
                     }
+                    /*  This last block is to treat the last word on each line -- everything works just like the
+                     * block above that was looking for a space to terminate the work.
+                     */
                     String word = line.substring(0,line.length());
                     if ( isSentenceEnd(word) ) sentences++;
                     word = cleanUp(word);
