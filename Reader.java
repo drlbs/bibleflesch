@@ -35,7 +35,7 @@ import java.util.Comparator;
 
                 //import dale chall words
                 ArrayList<String> DCwords = new ArrayList<String>();
-                FileReader DCreader = new FileReader("DCwordlist1995.txt");
+                FileReader DCreader = new FileReader("data/DCwordlist1995.txt");
                 Scanner scammer = new Scanner(DCreader);
                 int hardWordCount = 0;
                 int notHard = 0;
