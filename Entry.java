@@ -3,7 +3,6 @@ import java.util.ArrayList;
 class Entry{
 
     public String word;
-    // The lines array list keeps up with which lines in the input file the word occurred on
     public ArrayList<Integer> lines = new ArrayList<Integer>();
     boolean pronoun = true; 
     boolean isNumber = false;
