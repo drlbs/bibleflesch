@@ -42,14 +42,10 @@ import java.util.Comparator;
                 ArrayList<String> DCwords = new ArrayList<String>();
                 FileReader DCreader = new FileReader("data/DCwordlist1995.txt");
                 Scanner scammer = new Scanner(DCreader);
+
                 while(scammer.hasNextLine()){
                   DCwords.add(scammer.nextLine().trim());
                 }
-
-
-
-
-
 
                 Scanner console = new Scanner(System.in);
                 System.out.print("Input file: ");
@@ -63,7 +59,29 @@ import java.util.Comparator;
                 // We process ONE LINE at a time and then parse each word from that line
                 while (in.hasNextLine()) {
                     String line = in.nextLine().trim();
+                    if (line.isEmpty()){
+                      //in.nextLine();
+                    }
+                    else if (line.charAt(0)<'0' || line.charAt(0)>'9'){
+
+                    }
+
+                    else {
+
+                    if (line.charAt(2) >= '0' && line.charAt(2) <= '9'){
+                      line = line.substring(3).trim();
+                    }
+
+                    else if (line.charAt(1) >= '0' && line.charAt(1) <= '9'){
+                      line = line.substring(2).trim();
+                    }
+                    else {
+                      line = line.substring(1).trim();
+                    }
+
                     index = line.indexOf(" ");
+                    line = line.replaceAll("--", "  ").trim();
+                    //This straight up isn't working for no good reason
                     while ( index != -1 ) {
                         // Grab the next word "token" from the line looking for a space to end the word
                         String word = line.substring(0,line.indexOf(" "));
@@ -72,6 +90,7 @@ import java.util.Comparator;
                         // Now, call the static method to clean up the word,
                         // Questions -- are we doing too much here?
                         word = cleanUp(word);
+
 
                         //find hard words in the word list
                         /*String tempWord = word.toLowerCase();
@@ -83,6 +102,7 @@ import java.util.Comparator;
                           hardWordCount++;
                           System.out.println("Did not find index of " + word + ": HARD");
                         }*/
+
 
                         Entry wordObject = new Entry(word);
                         /* At this point we will check to see if we have seen this word before
@@ -110,12 +130,15 @@ import java.util.Comparator;
                         line = line.substring(line.indexOf(" ")+1,line.length()).trim();
                         index = line.indexOf(" ");
                     }
+
                     /*  This last block is to treat the last word on each line -- everything works just like the
                      * block above that was looking for a space to terminate the work.
                      */
                     String word = line.substring(0,line.length());
                     if ( isSentenceEnd(word) ) sentences++;
                     word = cleanUp(word);
+
+
                         Entry wordObject = new Entry(word);
                         int arrayIndex = Collections.binarySearch(words, wordObject, wordComparator);
                         if ( arrayIndex < 0 ) {
@@ -135,19 +158,6 @@ import java.util.Comparator;
                     index = 0;
                     lineNumber++;
 
-                    /*
-                    String tempWord = word.toLowerCase();
-                    //handle last word for dale chall
-                    int DCindex = Collections.binarySearch(DCwords,tempWord);
-                    if(DCindex > -1){
-                    System.out.println("found index of "+ word + " at " + DCindex);
-                      notHard++;
-                    }else{
-                      hardWordCount++;
-                      System.out.println("Did not find index of " + word + ": HARD");
-                    }*/
-
-                }
 
                 //System.out.println("The size of the ArrayList is " + words.size());
                 Collections.sort(words, wordCountComparator);
@@ -225,6 +235,9 @@ import java.util.Comparator;
             word = word.replace('(', ' ').trim();
             word = word.replace(')', ' ').trim();
 
+            word = word.replace('#', ' ').trim();
+            word = word.replace('"', ' ').trim();
+            word = word.replace('-', ' ').trim();
             return word;
         }
 
