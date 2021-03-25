@@ -38,20 +38,14 @@ import java.util.Comparator;
                     }
                 };
 
-
-
                 //import dale chall words
                 ArrayList<String> DCwords = new ArrayList<String>();
                 FileReader DCreader = new FileReader("data/DCwordlist1995.txt");
                 Scanner scammer = new Scanner(DCreader);
-                int hardWordCount = 0;
-                int notHard = 0;
+
                 while(scammer.hasNextLine()){
-                DCwords.add(scammer.nextLine().trim());
+                  DCwords.add(scammer.nextLine().trim());
                 }
-
-
-
 
                 Scanner console = new Scanner(System.in);
                 System.out.print("Input file: ");
@@ -97,6 +91,17 @@ import java.util.Comparator;
                         // Questions -- are we doing too much here?
                         word = cleanUp(word);
 
+
+                        //find hard words in the word list
+                        /*String tempWord = word.toLowerCase();
+                        int DCindex = Collections.binarySearch(DCwords,tempWord);
+                        if(DCindex > -1){
+                          System.out.println("found index of "+ word + " at " + DCindex);
+                          notHard++;
+                        }else{
+                          hardWordCount++;
+                          System.out.println("Did not find index of " + word + ": HARD");
+                        }*/
 
 
                         Entry wordObject = new Entry(word);
@@ -153,20 +158,7 @@ import java.util.Comparator;
                     index = 0;
                     lineNumber++;
 
-/*
-                    //find hard words in the word list
-                    int DCindex = Collections.binarySearch(DCwords,word);
-                    if(DCindex > -1){
-                    //System.out.println("found index of "+ word + " at " + DCindex);
-                    notHard++;
-                    }else{
-                    hardWordCount++;
-                    //System.out.println("HARD");
-                    }
-*/
-                }
 
-                }
                 //System.out.println("The size of the ArrayList is " + words.size());
                 Collections.sort(words, wordCountComparator);
 
@@ -197,6 +189,36 @@ import java.util.Comparator;
 
                 System.out.println("The Flesch-Kincaid Grade Level is " + gradeLevel);
 
+
+
+
+
+
+                //DALE CHALL TEST
+                int hardWordCount = 0;
+                int notHard = 0;
+                for(int i = 0; i < words.size(); i++){
+                  int DCindex = Collections.binarySearch(DCwords,cleanUp(words.get(i).word.toLowerCase()));
+                  if(DCindex > -1){
+                    System.out.println("found index of "+ words.get(i).word + " at " + DCindex + " :" + words.get(i).getWordCount() + " times");
+                    notHard += words.get(i).getWordCount();
+                  }else{
+                    hardWordCount += words.get(i).getWordCount();
+                    System.out.println("Did not find index of " + words.get(i).word + ": HARD :" + words.get(i).getWordCount() + " times");
+                  }
+                }
+
+
+                System.out.println("DC hard words:" + hardWordCount + "\nDC not hard words:" + notHard);
+                double hardPercent = ((double)hardWordCount/(double)wordCount)*100;
+                double daleChall = 0.1579*(hardPercent) + 0.0496*((double)wordCount/(double)sentences);
+                if(hardPercent > 5){
+                  daleChall += 3.6365;
+                }
+                System.out.println("Hard word %: " + hardPercent);
+                System.out.println("The Dale-Chall readability index is " + daleChall);
+
+
             }
 
         private static String cleanUp( String word ){
@@ -212,6 +234,7 @@ import java.util.Comparator;
             word = word.replace('?', ' ').trim();
             word = word.replace('(', ' ').trim();
             word = word.replace(')', ' ').trim();
+
             word = word.replace('#', ' ').trim();
             word = word.replace('"', ' ').trim();
             word = word.replace('-', ' ').trim();
