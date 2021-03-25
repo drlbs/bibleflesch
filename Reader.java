@@ -153,7 +153,7 @@ import java.util.Comparator;
                     index = 0;
                     lineNumber++;
 
-
+/*
                     //find hard words in the word list
                     int DCindex = Collections.binarySearch(DCwords,word);
                     if(DCindex > -1){
@@ -163,7 +163,7 @@ import java.util.Comparator;
                     hardWordCount++;
                     //System.out.println("HARD");
                     }
-
+*/
                 }
 
                 }
